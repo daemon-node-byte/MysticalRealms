@@ -17,3 +17,5 @@ coverage
 *.env.development
 *.env.test
 *.env.production
+
+supabase-project
