@@ -18,4 +18,6 @@ coverage
 *.env.test
 *.env.production
 
-supabase-project
+!*.env.example
+
+supabase-project/volumes
