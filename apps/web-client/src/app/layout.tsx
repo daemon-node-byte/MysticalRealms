@@ -29,16 +29,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen w-full bg-gradient-to-b from-indigo-900 via-indigo-800 to-indigo-700`}
+      >
         <SiteTheme>
           <Header />
-          <main className="container mx-auto px-4 py-8  ">
-            {children}
-          </main>
+          <div className="min-h-screen w-full flex flex-col">
+            <main className="flex-1 w-full px-0 py-0">
+              {children}
+            </main>
+          </div>
           <Footer />
         </SiteTheme>
-        </body>
+      </body>
     </html>
   );
 }
