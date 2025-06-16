@@ -28,12 +28,57 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <style>{`
+          .animated-gradient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: linear-gradient(120deg, rgba(99,102,241,0.15) 0%, rgba(236,72,153,0.10) 100%);
+            animation: gradientMove 10s ease-in-out infinite alternate;
+          }
+          @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+          }
+          .star {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            opacity: 0.7;
+            box-shadow: 0 0 8px 2px #fff, 0 0 24px 8px #a5b4fc;
+            animation: twinkle 2s infinite alternate;
+          }
+          @keyframes twinkle {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+          }
+        `}</style>
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen w-full bg-gradient-to-b from-indigo-900 via-indigo-800 to-indigo-700`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen w-full bg-gradient-to-b from-indigo-900 via-indigo-800 to-indigo-700 relative`}
       >
+        <div className="animated-gradient" />
+        {/* Magical stars overlay */}
+        <div style={{position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none'}}>
+          {[...Array(18)].map((_, i) => (
+            <div
+              key={i}
+              className="star"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                width: `${Math.random() * 2 + 1}px`,
+                height: `${Math.random() * 2 + 1}px`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            />
+          ))}
+        </div>
         <SiteTheme>
           <Header />
-          <div className="min-h-screen w-full flex flex-col">
+          <div className="min-h-screen w-full flex flex-col relative z-10">
             <main className="flex-1 w-full px-0 py-0">
               {children}
             </main>
