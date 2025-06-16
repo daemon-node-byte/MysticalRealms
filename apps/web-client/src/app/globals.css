@@ -3,6 +3,40 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #2C003E;
+  --secondary: #4B1E6B;
+  --accent: #9D4EDD;
+  --text: #F5E8FF;
+  --heading-font: 'Cinzel', serif;
+  --body-font: 'Roboto Slab', serif;
+}
+
+[data-theme="deep-nebula"] {
+  --primary: #2C003E;
+  --secondary: #4B1E6B;
+  --accent: #9D4EDD;
+  --text: #F5E8FF;
+  --background: #0F0014;
+  --heading-font: 'Cinzel', serif;
+  --body-font: 'Roboto Slab', serif;
+}
+[data-theme="midnight-tarot"] {
+  --primary: #1A1A2E;
+  --secondary: #16213E;
+  --accent: #E94560;
+  --text: #EDF2F4;
+  --background: #0F0B1D;
+  --heading-font: 'Playfair Display', serif;
+  --body-font: 'Lato', sans-serif;
+}
+[data-theme="cosmic-neon"] {
+  --primary: #100F1D;
+  --secondary: #1F1C3D;
+  --accent: #00FFC6;
+  --text: #E0E0E0;
+  --background: #0A0713;
+  --heading-font: 'Montserrat Alternates', sans-serif;
+  --body-font: 'Open Sans', sans-serif;
 }
 
 @theme inline {
@@ -21,6 +55,10 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  font-family: var(--body-font, Arial, Helvetica, sans-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading-font, serif);
 }
