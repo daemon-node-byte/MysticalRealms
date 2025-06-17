@@ -6,21 +6,35 @@ export function MiniHoroscopeTeaser() {
   const [showResult, setShowResult] = useState(false);
 
   function getZodiac(date: string) {
-    // Simple zodiac logic (for demo)
+    const zodiacSigns = [
+      { name: "Aries", start: { month: 3, day: 21 }, end: { month: 4, day: 19 } },
+      { name: "Taurus", start: { month: 4, day: 20 }, end: { month: 5, day: 20 } },
+      { name: "Gemini", start: { month: 5, day: 21 }, end: { month: 6, day: 20 } },
+      { name: "Cancer", start: { month: 6, day: 21 }, end: { month: 7, day: 22 } },
+      { name: "Leo", start: { month: 7, day: 23 }, end: { month: 8, day: 22 } },
+      { name: "Virgo", start: { month: 8, day: 23 }, end: { month: 9, day: 22 } },
+      { name: "Libra", start: { month: 9, day: 23 }, end: { month: 10, day: 22 } },
+      { name: "Scorpio", start: { month: 10, day: 23 }, end: { month: 11, day: 21 } },
+      { name: "Sagittarius", start: { month: 11, day: 22 }, end: { month: 12, day: 21 } },
+      { name: "Capricorn", start: { month: 12, day: 22 }, end: { month: 1, day: 19 } },
+      { name: "Aquarius", start: { month: 1, day: 20 }, end: { month: 2, day: 18 } },
+      { name: "Pisces", start: { month: 2, day: 19 }, end: { month: 3, day: 20 } },
+    ];
+
     const d = new Date(date);
-    const m = d.getUTCMonth() + 1, day = d.getUTCDate();
-    if ((m === 3 && day >= 21) || (m === 4 && day <= 19)) return "Aries";
-    if ((m === 4 && day >= 20) || (m === 5 && day <= 20)) return "Taurus";
-    if ((m === 5 && day >= 21) || (m === 6 && day <= 20)) return "Gemini";
-    if ((m === 6 && day >= 21) || (m === 7 && day <= 22)) return "Cancer";
-    if ((m === 7 && day >= 23) || (m === 8 && day <= 22)) return "Leo";
-    if ((m === 8 && day >= 23) || (m === 9 && day <= 22)) return "Virgo";
-    if ((m === 9 && day >= 23) || (m === 10 && day <= 22)) return "Libra";
-    if ((m === 10 && day >= 23) || (m === 11 && day <= 21)) return "Scorpio";
-    if ((m === 11 && day >= 22) || (m === 12 && day <= 21)) return "Sagittarius";
-    if ((m === 12 && day >= 22) || (m === 1 && day <= 19)) return "Capricorn";
-    if ((m === 1 && day >= 20) || (m === 2 && day <= 18)) return "Aquarius";
-    if ((m === 2 && day >= 19) || (m === 3 && day <= 20)) return "Pisces";
+    const month = d.getUTCMonth() + 1;
+    const day = d.getUTCDate();
+
+    for (const sign of zodiacSigns) {
+      const { name, start, end } = sign;
+      if (
+        (month === start.month && day >= start.day) ||
+        (month === end.month && day <= end.day) ||
+        (start.month > end.month && (month > start.month || month < end.month))
+      ) {
+        return name;
+      }
+    }
     return null;
   }
 
