@@ -1,0 +1,9 @@
+{
+  "name": "mysticalrealms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "dev:api": "cd apps/api && sh dev.sh"
+  }
+}
