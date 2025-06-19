@@ -1,8 +1,8 @@
-# MysticalRealms Code of Conduct
+# Mystical Realms Code of Conduct
 
 ## Our Sacred Commitment
 
-MysticalRealms is dedicated to creating a welcoming, inclusive, and harassment-free community for everyone interested in the mystical arts, spiritual exploration, and the intersection of technology with ancient wisdom. We believe that diversity strengthens our community and enhances our collective journey toward understanding.
+Mystical Realms is dedicated to creating a welcoming, inclusive, and harassment-free community for everyone interested in the mystical arts, spiritual exploration, and the intersection of technology with ancient wisdom. We believe that diversity strengthens our community and enhances our collective journey toward understanding.
 
 ## Our Values
 
@@ -79,7 +79,7 @@ We practice thoughtful, kind, and constructive communication, recognizing that w
 
 If you experience or witness behavior that violates this Code of Conduct:
 
-1. **Direct Contact**: Email the maintainers at [conduct@mysticalrealms.com]
+1. **Direct Contact**: Email the maintainers at [conduct@mystical-realms.com]
 2. **GitHub Issues**: Create a private issue marked as "Code of Conduct Violation"
 3. **Anonymous Reporting**: Use our anonymous reporting form [link to form]
 
@@ -103,7 +103,7 @@ Depending on the severity and nature of the violation, consequences may include:
 
 If you believe you have been unfairly penalized:
 
-1. Submit an appeal within 30 days to [appeals@mysticalrealms.com]
+1. Submit an appeal within 30 days to [appeals@mystical-realms.com]
 2. Include relevant evidence and explanation
 3. Appeals will be reviewed by a different maintainer when possible
 

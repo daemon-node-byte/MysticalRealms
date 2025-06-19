@@ -5,9 +5,9 @@
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.mystical-realms.com&up_message=online&down_message=offline&link=https%3B%2F%2Fwww.mystical-realms.com%2F)](https://www.mystical-realms.com/)
-[![Build Status](https://github.com/yourusername/MysticalRealms_monorepo/workflows/CI/badge.svg)](https://github.com/yourusername/MysticalRealms_monorepo/actions)
-[![Coverage Status](https://codecov.io/gh/yourusername/MysticalRealms_monorepo/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/MysticalRealms_monorepo)
-[![Code Quality](https://app.codacy.com/project/badge/Grade/12345678901234567890123456789012)](https://www.codacy.com/gh/yourusername/MysticalRealms_monorepo/dashboard)
+[![Build Status](https://github.com/daemon-node-byte/MysticalRealms/workflows/CI/badge.svg)](https://github.com/daemon-node-byte/MysticalRealms/actions)
+[![Coverage Status](https://codecov.io/gh/daemon-node-byte/MysticalRealms/branch/main/graph/badge.svg)](https://codecov.io/gh/daemon-node-byte/MysticalRealms)
+[![Code Quality](https://app.codacy.com/project/badge/Grade/12345678901234567890123456789012)](https://www.codacy.com/gh/daemon-node-byte/MysticalRealms/dashboard)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -134,8 +134,8 @@ Before you begin, ensure you have the following installed:
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/MysticalRealms_monorepo.git
-   cd MysticalRealms_monorepo
+   git clone https://github.com/daemon-node-byte/MysticalRealms.git
+   cd MysticalRealms
    ```
 
 2. **Install dependencies**
@@ -201,17 +201,14 @@ Comprehensive documentation is available in the [`/docs/wiki`](/docs/wiki) direc
 ### Running Tests
 
 ```bash
-# Run all tests
-pnpm test
-
 # Run frontend tests
 pnpm test:web
 
 # Run backend tests
 cd apps/api && pytest
 
-# Run tests with coverage
-pnpm test:coverage
+# Run frontend tests with coverage
+pnpm --filter web test:coverage
 ```
 
 ### Test-Driven Development
@@ -228,7 +225,7 @@ This project follows TDD principles:
 ## 📦 Project Structure
 
 ```
-MysticalRealms_monorepo/
+MysticalRealms/
 ├── apps/
 │   ├── web/                 # Next.js frontend application
 │   └── api/                 # FastAPI backend service
@@ -306,7 +303,7 @@ We welcome contributions from the mystical community! Here's how to get started:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **AGPL-3.0** License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -319,7 +316,7 @@ Security is paramount in handling user data and mystical practices. Please revie
 - Data protection measures
 - Incident response protocols
 
-To report security vulnerabilities, please email `security@mysticalrealms.dev` or create a private security advisory.
+To report security vulnerabilities, please email `security@mystical-realms.com` or create a private security advisory.
 
 ---
 
@@ -341,7 +338,7 @@ If you find this project helpful, please consider giving it a ⭐ on GitHub!
 
 <div align="center">
 
-**[🔮 Visit Mystical Realms](https://mysticalrealms.com)** • **[📖 Documentation](/docs/wiki)** • **[🐛 Report Issues](https://github.com/yourusername/MysticalRealms_monorepo/issues)** • **[💬 Discussions](https://github.com/yourusername/MysticalRealms_monorepo/discussions)**
+**[🔮 Visit Mystical Realms](https://mystical-realms.com)** • **[📖 Documentation](/docs/wiki)** • **[🐛 Report Issues](https://github.com/daemon-node-byte/MysticalRealms/issues)** • **[💬 Discussions](https://github.com/daemon-node-byte/MysticalRealms/discussions)**
 
 _Built with ❤️ and a touch of cosmic magic_
 

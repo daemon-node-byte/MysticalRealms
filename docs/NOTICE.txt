@@ -1,5 +1,5 @@
 Mystical Realms is A Tarot and Astrology Application for online readings
-Copyright (C) 2025  Joshua R McLain <jmclain@mysticalrealms.com> 
+Copyright (C) 2025  Joshua R McLain <jmclain@mystical-realms.com> 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
