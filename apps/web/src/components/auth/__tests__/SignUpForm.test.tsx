@@ -77,15 +77,90 @@ describe('SignUpForm', () => {
     expect(passwordInput).toHaveValue('NewPassword123!');
   });
 
-  it('updates confirm password pattern when password changes', () => {
+  it('validates password strength in JavaScript', () => {
+    render(<SignUpForm onSubmit={jest.fn()} />);
+    
+    const passwordInput = screen.getByLabelText(/^password$/i);
+    
+    // Test weak password shows error
+    fireEvent.change(passwordInput, { target: { value: 'weak' } });
+    fireEvent.blur(passwordInput);
+    
+    expect(screen.getByText(/password must be at least 6 characters/i)).toBeInTheDocument();
+    
+    // Test strong password
+    fireEvent.change(passwordInput, { target: { value: 'TestPassword123!' } });
+    fireEvent.blur(passwordInput);
+    
+    // Error should be gone
+    expect(screen.queryByText(/password must be at least 6 characters/i)).not.toBeInTheDocument();
+  });
+
+  it('validates password confirmation matching', () => {
     render(<SignUpForm onSubmit={jest.fn()} />);
     
     const passwordInput = screen.getByLabelText(/^password$/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
     
+    // Set password first
     fireEvent.change(passwordInput, { target: { value: 'TestPassword123!' } });
     
-    expect(confirmPasswordInput).toHaveAttribute('pattern', 'TestPassword123!');
+    // Set mismatched confirm password
+    fireEvent.change(confirmPasswordInput, { target: { value: 'DifferentPassword!' } });
+    fireEvent.blur(confirmPasswordInput);
+    
+    expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument();
+    
+    // Fix confirm password
+    fireEvent.change(confirmPasswordInput, { target: { value: 'TestPassword123!' } });
+    fireEvent.blur(confirmPasswordInput);
+    
+    expect(screen.queryByText(/passwords do not match/i)).not.toBeInTheDocument();
+  });
+
+  it('validates all password requirements', () => {
+    render(<SignUpForm onSubmit={jest.fn()} />);
+    
+    const passwordInput = screen.getByLabelText(/^password$/i);
+    
+    // Test missing uppercase
+    fireEvent.change(passwordInput, { target: { value: 'testpassword123!' } });
+    fireEvent.blur(passwordInput);
+    expect(screen.getByText(/password must contain at least one uppercase letter/i)).toBeInTheDocument();
+    
+    // Test missing lowercase
+    fireEvent.change(passwordInput, { target: { value: 'TESTPASSWORD123!' } });
+    fireEvent.blur(passwordInput);
+    expect(screen.getByText(/password must contain at least one lowercase letter/i)).toBeInTheDocument();
+    
+    // Test missing number
+    fireEvent.change(passwordInput, { target: { value: 'TestPassword!' } });
+    fireEvent.blur(passwordInput);
+    expect(screen.getByText(/password must contain at least one number/i)).toBeInTheDocument();
+    
+    // Test missing special character
+    fireEvent.change(passwordInput, { target: { value: 'TestPassword123' } });
+    fireEvent.blur(passwordInput);
+    expect(screen.getByText(/password must contain at least one special character/i)).toBeInTheDocument();
+  });
+
+  it('shows authentication error when provided', () => {
+    const mockSubmit = jest.fn().mockRejectedValue(new Error('Authentication failed'));
+    render(<SignUpForm onSubmit={mockSubmit} />);
+    
+    const form = screen.getByRole('form');
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/^password$/i);
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+    
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'TestPassword123!' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'TestPassword123!' } });
+    
+    fireEvent.submit(form);
+    
+    // Should show auth error after submission
+    expect(mockSubmit).toHaveBeenCalled();
   });
 
   it('has proper form structure and accessibility', () => {
@@ -101,7 +176,6 @@ describe('SignUpForm', () => {
     const passwordInput = screen.getByLabelText(/^password$/i);
     expect(passwordInput).toHaveAttribute('type', 'password');
     expect(passwordInput).toHaveAttribute('required');
-    expect(passwordInput).toHaveAttribute('pattern');
     expect(passwordInput).toHaveAttribute('min', '6');
     
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);

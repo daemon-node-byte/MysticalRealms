@@ -21,25 +21,39 @@ export function useAuth() {
   const supabase = createClient();
 
   useEffect(() => {
+    let isMounted = true;
+    let fetchId = 0;
+
     // Get initial session
     const getUser = async () => {
       const {
         data: { user }
       } = await supabase.auth.getUser();
+
+      if (!isMounted) return;
+
       setUser(user);
 
       if (user) {
         // Fetch user profile
-        const { data: profile } = await supabase
+        const { data: profileData } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", user.id)
           .single();
 
-        setProfile(profile);
+        if (isMounted) {
+          setProfile(profileData);
+        }
+      } else {
+        if (isMounted) {
+          setProfile(null);
+        }
       }
 
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     };
 
     getUser();
@@ -48,26 +62,42 @@ export function useAuth() {
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!isMounted) return;
+
       const currentUser = session?.user ?? null;
       setUser(currentUser);
 
+      fetchId += 1;
+      const currentFetchId = fetchId;
+
       if (currentUser) {
         // Fetch user profile
-        const { data: profile } = await supabase
+        const { data: profileData } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", currentUser.id)
           .single();
 
-        setProfile(profile);
+        // Only update if this is the latest fetch and component is still mounted
+        if (currentFetchId === fetchId && isMounted) {
+          setProfile(profileData);
+        }
       } else {
-        setProfile(null);
+        if (isMounted) {
+          setProfile(null);
+        }
       }
 
-      setLoading(false);
+      // Only update loading if this is the latest fetch and component is still mounted
+      if (currentFetchId === fetchId && isMounted) {
+        setLoading(false);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, [supabase]);
 
   const signOut = async () => {

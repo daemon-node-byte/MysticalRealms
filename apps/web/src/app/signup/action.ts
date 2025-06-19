@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 export async function signup(formData: FormData): Promise<Error | void> {
-  const supabase = await createClient();
+  const supabase = createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
@@ -15,12 +15,16 @@ export async function signup(formData: FormData): Promise<Error | void> {
     password: formData.get("password") as string
   };
 
+  // Get the intended redirect path, default to "/"
+  const redirectTo = (formData.get("redirectTo") as string) || "/";
+
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    redirect("/error");
-  } else {
-    revalidatePath("/", "layout");
-    redirect("/");
+    const params = new URLSearchParams({ error: error.message });
+    redirect(`/signup?${params.toString()}`);
   }
+
+  revalidatePath(redirectTo, "layout");
+  redirect(redirectTo);
 }

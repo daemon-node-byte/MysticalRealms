@@ -5,12 +5,16 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 export async function resetPassword(formData: FormData) {
-  const supabase = await createClient();
+  const supabase = createClient();
   const email = formData.get("email") as string;
+
   const { error } = await supabase.auth.resetPasswordForEmail(email);
+
   if (error) {
-    redirect("/error");
+    const params = new URLSearchParams({ error: error.message });
+    redirect(`/reset?${params.toString()}`);
   }
+
   revalidatePath("/", "layout");
   redirect("/reset-sent");
 }

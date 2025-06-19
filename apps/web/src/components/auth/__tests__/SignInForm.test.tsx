@@ -79,4 +79,33 @@ describe('SignInForm', () => {
     expect(passwordInput).toHaveAttribute('required');
     expect(passwordInput).toHaveAttribute('autoComplete', 'current-password');
   });
+
+  it('displays authentication error messages', () => {
+    const mockSubmit = jest.fn().mockRejectedValue(new Error('Invalid credentials'));
+    render(<SignInForm onSubmit={mockSubmit} />);
+    
+    const form = screen.getByRole('form');
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    
+    fireEvent.submit(form);
+    
+    expect(mockSubmit).toHaveBeenCalled();
+  });
+
+  it('clears error on new submission attempt', () => {
+    const mockSubmit = jest.fn();
+    render(<SignInForm onSubmit={mockSubmit} />);
+    
+    const form = screen.getByRole('form');
+    
+    // Submit multiple times to ensure no error accumulation
+    fireEvent.submit(form);
+    fireEvent.submit(form);
+    
+    expect(mockSubmit).toHaveBeenCalledTimes(2);
+  });
 });

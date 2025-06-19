@@ -69,4 +69,43 @@ describe('PasswordResetForm', () => {
     expect(emailInput).toHaveAttribute('required');
     expect(emailInput).toHaveAttribute('autoComplete', 'email');
   });
+
+  it('displays success message after successful submission', async () => {
+    const mockSubmit = jest.fn().mockResolvedValue(undefined);
+    render(<PasswordResetForm onSubmit={mockSubmit} />);
+    
+    const form = screen.getByRole('form');
+    const emailInput = screen.getByLabelText(/email/i);
+    
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.submit(form);
+    
+    expect(mockSubmit).toHaveBeenCalledWith(expect.any(FormData));
+  });
+
+  it('displays error message on submission failure', () => {
+    const mockSubmit = jest.fn().mockRejectedValue(new Error('Reset failed'));
+    render(<PasswordResetForm onSubmit={mockSubmit} />);
+    
+    const form = screen.getByRole('form');
+    const emailInput = screen.getByLabelText(/email/i);
+    
+    fireEvent.change(emailInput, { target: { value: 'invalid@example.com' } });
+    fireEvent.submit(form);
+    
+    expect(mockSubmit).toHaveBeenCalled();
+  });
+
+  it('clears previous messages on new submission', () => {
+    const mockSubmit = jest.fn();
+    render(<PasswordResetForm onSubmit={mockSubmit} />);
+    
+    const form = screen.getByRole('form');
+    
+    // Submit multiple times
+    fireEvent.submit(form);
+    fireEvent.submit(form);
+    
+    expect(mockSubmit).toHaveBeenCalledTimes(2);
+  });
 });

@@ -105,4 +105,52 @@ describe('Header', () => {
     mockSignOut();
     expect(mockSignOut).toHaveBeenCalled();
   });
+
+  it('shows loading state when authentication is in progress', () => {
+    mockUseAuth.mockReturnValue({
+      user: null,
+      profile: null,
+      loading: true,
+      signOut: jest.fn(),
+      isAuthenticated: false,
+    });
+
+    render(<Theme><Header /></Theme>);
+    
+    // When loading, should still show the main navigation but authentication buttons may be different
+    expect(screen.getByText('Mystical Realms')).toBeInTheDocument();
+    expect(screen.getByText('Tarot')).toBeInTheDocument();
+    expect(screen.getByText('Astrology')).toBeInTheDocument();
+  });
+
+  it('handles authenticated user without profile gracefully', () => {
+    mockUseAuth.mockReturnValue({
+      user: {
+        id: '123',
+        email: 'test@example.com',
+        aud: 'authenticated',
+        role: 'authenticated',
+        email_confirmed_at: '2023-01-01T00:00:00Z',
+        phone: '',
+        confirmation_sent_at: '2023-01-01T00:00:00Z',
+        confirmed_at: '2023-01-01T00:00:00Z',
+        last_sign_in_at: '2023-01-01T00:00:00Z',
+        app_metadata: {},
+        user_metadata: {},
+        identities: [],
+        created_at: '2023-01-01T00:00:00Z',
+        updated_at: '2023-01-01T00:00:00Z'
+      },
+      profile: null, // No profile
+      loading: false,
+      signOut: jest.fn(),
+      isAuthenticated: true,
+    });
+
+    render(<Theme><Header /></Theme>);
+    
+    // Should still render authenticated navigation
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.queryByText('Sign In')).not.toBeInTheDocument();
+  });
 });

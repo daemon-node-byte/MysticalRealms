@@ -23,7 +23,7 @@ Mystical Realms is a modular Tarot & Astrology platform built with Next.js (Type
 
 - **Architecture & Patterns**: Refer to `house_rules.md` for code organization, layering, and best practices.
 - **Database & Data Models**: Use `database_supabase.md` for table schemas, relationships, and seed data.
-- **Feature Planning**: Consult `techstack_roadmap.md` and `sprint_summery.md` for implementation order and feature breakdowns.
+- **Feature Planning**: Consult `techstack_roadmap.md` and `sprint_summary.md` for implementation order and feature breakdowns.
 - **UI/UX & Design**: Reference `design_principles.md` and `public_pages_layout.md` for visual and interaction guidelines.
 
 ## Documentation Overview
@@ -31,7 +31,7 @@ Mystical Realms is a modular Tarot & Astrology platform built with Next.js (Type
 The `/docs/wiki/*` is structured to provide clear guidance on the project's architecture, coding standards, and usage. It includes:
 
 - **techstack_roadmap.md**: High-level tech stack, architecture, and sprint roadmap.
-- **sprint_summery.md**: Step-by-step breakdown of each sprint, with granular tasks.
+- **sprint_summary.md**: Step-by-step breakdown of each sprint, with granular tasks.
 - **database_supabase.md**: Complete Supabase SQL schema, seed data, and ER diagram.
 - **house_rules.md**: Architecture, folder structure, and best-practice guidelines.
 - **design_principles.md**: Visual design principles, theme palettes, and brand usage.
