@@ -81,7 +81,7 @@ If you experience or witness behavior that violates this Code of Conduct:
 
 1. **Direct Contact**: Email the maintainers at [conduct@mystical-realms.com]
 2. **GitHub Issues**: Create a private issue marked as "Code of Conduct Violation"
-3. **Anonymous Reporting**: Use our anonymous reporting form [link to form]
+<!-- 3. **Anonymous Reporting**: Use our anonymous reporting form [link to form] -->
 
 ### 🔍 **Investigation Process**
 
@@ -103,7 +103,7 @@ Depending on the severity and nature of the violation, consequences may include:
 
 If you believe you have been unfairly penalized:
 
-1. Submit an appeal within 30 days to [appeals@mystical-realms.com]
+1. Submit an appeal within 30 days to [appeals@mystical-realms.com](appeals@mystical-realms.com)
 2. Include relevant evidence and explanation
 3. Appeals will be reviewed by a different maintainer when possible
 

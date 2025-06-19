@@ -1,4 +1,4 @@
-Mystical Realms is A Tarot and Astrology Application for online readings
+Mystical Realms is a Tarot and Astrology web application for online readings and horoscopes
 Copyright (C) 2025  Joshua R McLain <jmclain@mystical-realms.com> 
 
 This program is free software: you can redistribute it and/or modify
