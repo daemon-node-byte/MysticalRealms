@@ -1,28 +1,39 @@
 import React from 'react';
 import { InstagramLogoIcon, TwitterLogoIcon, DiscordLogoIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const Footer: React.FC = () => (
-  <footer className="w-full py-8 bg-[#1A1A2E] text-[#F5E8FF] border-t border-[#4B1E6B]">
+  <footer style={{ width: '100%', padding: '2rem 0', background: 'var(--color-primary)', color: 'var(--color-text)', borderTop: '1px solid var(--color-border)' }}>
     <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 px-4">
       <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-center">
-        <Link href="/about" className="hover:text-[#9D4EDD] transition">About</Link>
-        <Link href="/blog" className="hover:text-[#9D4EDD] transition">Blog</Link>
-        <Link href="/faq" className="hover:text-[#9D4EDD] transition">FAQ</Link>
-        <Link href="/contact" className="hover:text-[#9D4EDD] transition">Contact</Link>
-        <Link href="/privacy" className="hover:text-[#9D4EDD] transition">Privacy</Link>
-        <Link href="/terms" className="hover:text-[#9D4EDD] transition">Terms</Link>
+        <Link href="/about" className="hover:text-[var(--color-accent)] transition">About</Link>
+        <Link href="/blog" className="hover:text-[var(--color-accent)] transition">Blog</Link>
+        <Link href="/faq" className="hover:text-[var(--color-accent)] transition">FAQ</Link>
+        <Link href="/contact" className="hover:text-[var(--color-accent)] transition">Contact</Link>
+        <Link href="/privacy" className="hover:text-[var(--color-accent)] transition">Privacy</Link>
+        <Link href="/terms" className="hover:text-[var(--color-accent)] transition">Terms</Link>
       </div>
       <div className="flex gap-4 items-center">
-        <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><InstagramLogoIcon className="w-6 h-6 hover:text-[#9D4EDD] transition" /></a>
-        <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><TwitterLogoIcon className="w-6 h-6 hover:text-[#9D4EDD] transition" /></a>
-        <a href="https://discord.com" aria-label="Discord" target="_blank" rel="noopener noreferrer"><DiscordLogoIcon className="w-6 h-6 hover:text-[#9D4EDD] transition" /></a>
+        <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><InstagramLogoIcon className="w-6 h-6 hover:text-[var(--color-accent)] transition" /></a>
+        <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><TwitterLogoIcon className="w-6 h-6 hover:text-[var(--color-accent)] transition" /></a>
+        <a href="https://discord.com" aria-label="Discord" target="_blank" rel="noopener noreferrer"><DiscordLogoIcon className="w-6 h-6 hover:text-[var(--color-accent)] transition" /></a>
       </div>
       <div className="flex gap-2 items-center">
-        <input type="email" placeholder="Your email" className="rounded px-3 py-1 bg-[#2C003E] text-[#F5E8FF] border border-[#4B1E6B] focus:outline-none focus:ring-2 focus:ring-[#9D4EDD]" disabled />
-        <button type="button" className="bg-[#9D4EDD] text-[#0F0014] rounded px-4 py-1 font-semibold hover:bg-[#4B1E6B] transition" disabled>Subscribe</button>
+        <input type="email" placeholder="Your email" className="rounded px-3 py-1 bg-[var(--color-primary)] text-[var(--color-text)] border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" disabled />
+        <button type="button" className="bg-[var(--color-accent)] text-[var(--color-primary)] rounded px-4 py-1 font-semibold hover:bg-[var(--color-secondary)] transition" disabled>Subscribe</button>
       </div>
     </div>
-    <div className="text-center text-xs text-[#9D4EDD] mt-4">© {new Date().getFullYear()} Mystical Realms. All rights reserved.</div>
+    <div className="text-center mt-8 mb-4 flex items-center justify-center gap-2">
+      <Image 
+        src="/logo.svg" 
+        alt="Mystical Realms Logo" 
+        width={20} 
+        height={20}
+        className="w-5 h-5"
+        style={{ filter: 'brightness(0) saturate(100%) invert(60%) sepia(85%) saturate(1000%) hue-rotate(260deg) brightness(1.2) contrast(1.1)' }}
+      />
+      <span className="text-xs text-[var(--color-accent)] font-cinzel">© {new Date().getFullYear()} Mystical Realms. All rights reserved.</span>
+    </div>
   </footer>
 );
