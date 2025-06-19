@@ -52,7 +52,7 @@ export default function SignUpForm({ onSubmit }: Props) {
                   </TextField.Slot>
                 </TextField.Root>
               </Form.Control>
-                <Form.Message match="valueMissing">Please a password</Form.Message>
+                <Form.Message match="valueMissing">Please enter your password</Form.Message>
                 <Form.Message match="tooShort">Password must be at least 6 characters</Form.Message>
                 <Form.Message match="patternMismatch">Password must contain at least 6 characters, one uppercase, one lowercase, one number and one special character.</Form.Message>
             </Form.Field>
