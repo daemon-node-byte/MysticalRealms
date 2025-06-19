@@ -22,8 +22,44 @@ import {
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
+// Types for Quick Actions configuration
+interface QuickAction {
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  title: string;
+  buttonText: string;
+  href: string;
+}
+
 function DashboardContent() {
   const { profile } = useAuth();
+
+  // Quick Actions data configuration
+  const quickActions: QuickAction[] = [
+    {
+      icon: MagicWandIcon,
+      title: 'New Tarot Reading',
+      buttonText: 'Draw Cards',
+      href: '/tarot/new'
+    },
+    {
+      icon: StarIcon,
+      title: 'Birth Chart',
+      buttonText: 'Generate',
+      href: '/astrology/chart'
+    },
+    {
+      icon: Pencil1Icon,
+      title: 'Journal Entry',
+      buttonText: 'Write',
+      href: '/journal/new'
+    },
+    {
+      icon: CalendarIcon,
+      title: 'Calendar',
+      buttonText: 'View',
+      href: '/calendar'
+    }
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -48,53 +84,25 @@ function DashboardContent() {
           Quick Actions
         </Heading>
         <Grid columns={{ initial: '1', sm: '2', md: '4' }} gap="4">
-          <Card style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
-            <Flex direction="column" align="center" gap="3" p="4">
-              <MagicWandIcon className="w-8 h-8" style={{ color: 'var(--color-accent)' }} />
-              <Text size="3" weight="bold" style={{ color: 'var(--color-text)' }}>
-                New Tarot Reading
-              </Text>
-              <Button asChild size="2">
-                <Link href="/tarot/new">Draw Cards</Link>
-              </Button>
-            </Flex>
-          </Card>
-
-          <Card style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
-            <Flex direction="column" align="center" gap="3" p="4">
-              <StarIcon className="w-8 h-8" style={{ color: 'var(--color-accent)' }} />
-              <Text size="3" weight="bold" style={{ color: 'var(--color-text)' }}>
-                Birth Chart
-              </Text>
-              <Button asChild size="2">
-                <Link href="/astrology/chart">Generate</Link>
-              </Button>
-            </Flex>
-          </Card>
-
-          <Card style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
-            <Flex direction="column" align="center" gap="3" p="4">
-              <Pencil1Icon className="w-8 h-8" style={{ color: 'var(--color-accent)' }} />
-              <Text size="3" weight="bold" style={{ color: 'var(--color-text)' }}>
-                Journal Entry
-              </Text>
-              <Button asChild size="2">
-                <Link href="/journal/new">Write</Link>
-              </Button>
-            </Flex>
-          </Card>
-
-          <Card style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
-            <Flex direction="column" align="center" gap="3" p="4">
-              <CalendarIcon className="w-8 h-8" style={{ color: 'var(--color-accent)' }} />
-              <Text size="3" weight="bold" style={{ color: 'var(--color-text)' }}>
-                Calendar
-              </Text>
-              <Button asChild size="2">
-                <Link href="/calendar">View</Link>
-              </Button>
-            </Flex>
-          </Card>
+          {quickActions.map((action, index) => {
+            const IconComponent = action.icon;
+            return (
+              <Card 
+                key={index} 
+                style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}
+              >
+                <Flex direction="column" align="center" gap="3" p="4">
+                  <IconComponent className="w-8 h-8" style={{ color: 'var(--color-accent)' }} />
+                  <Text size="3" weight="bold" style={{ color: 'var(--color-text)' }}>
+                    {action.title}
+                  </Text>
+                  <Button asChild size="2">
+                    <Link href={action.href}>{action.buttonText}</Link>
+                  </Button>
+                </Flex>
+              </Card>
+            );
+          })}
         </Grid>
       </Box>
 
