@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
-import { MagicWandIcon, PersonIcon, ExitIcon } from '@radix-ui/react-icons';
+import { PersonIcon, ExitIcon } from '@radix-ui/react-icons';
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/hooks/useAuth';
 
 export const Header: React.FC = () => {
@@ -12,8 +13,15 @@ export const Header: React.FC = () => {
   return (
     <header style={{ width: '100%', padding: '1.5rem 0', background: 'var(--color-primary)', color: 'var(--color-text)', boxShadow: '0 2px 8px 0 rgba(0,0,0,0.08)', borderBottom: '1px solid var(--color-border)' }}>
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-widest font-cinzel">
-          <MagicWandIcon className="w-8 h-8" style={{ color: 'var(--color-accent)' }} />
+        <Link href="/" className="flex items-center gap-3 text-2xl font-bold tracking-widest font-cinzel">
+          <Image 
+            src="/logo.svg" 
+            alt="Mystical Realms Logo" 
+            width={32} 
+            height={32}
+            className="w-8 h-8"
+            style={{ filter: 'brightness(0) saturate(100%) invert(60%) sepia(85%) saturate(1000%) hue-rotate(260deg) brightness(1.2) contrast(1.1)' }}
+          />
           Mystical Realms
         </Link>
         

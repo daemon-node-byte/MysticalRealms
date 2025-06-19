@@ -2,8 +2,9 @@ import React from 'react';
 import SignUpForm from "@/components/auth/SignUpForm";
 import { signup } from "./action";
 import { Card, Heading, Text, Section, Flex, Box, Separator } from '@radix-ui/themes';
-import { MagicWandIcon, StarIcon } from '@radix-ui/react-icons';
+import { StarIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function SignUpPage() {
   return (
@@ -41,9 +42,13 @@ export default function SignUpPage() {
           <Box p="6">
             {/* Header */}
             <Flex direction="column" align="center" mb="6">
-              <MagicWandIcon 
-                className="w-12 h-12 mb-4" 
-                style={{ color: 'var(--color-accent)' }} 
+              <Image 
+                src="/logo.svg" 
+                alt="Mystical Realms Logo" 
+                width={48} 
+                height={48}
+                className="w-12 h-12 mb-4"
+                style={{ filter: 'brightness(0) saturate(100%) invert(60%) sepia(85%) saturate(1000%) hue-rotate(260deg) brightness(1.2) contrast(1.1)' }}
               />
               <Heading 
                 size="6" 

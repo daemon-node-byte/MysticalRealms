@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, Text, Heading, Section, Flex } from '@radix-ui/themes';
-import { MagicWandIcon, StarIcon } from '@radix-ui/react-icons';
+import { StarIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const HeroSection: React.FC = () => (
   <Section className="w-full min-h-[70vh] relative overflow-hidden">
@@ -29,7 +30,14 @@ export const HeroSection: React.FC = () => (
       className="relative z-10 h-full min-h-[70vh] text-center px-4 py-16"
     >
       <Flex align="center" gap="4" mb="6" className="opacity-90">
-        <MagicWandIcon className="w-12 h-12 sm:w-16 sm:h-16" style={{ color: 'var(--color-accent)' }} />
+        <Image 
+          src="/logo.svg" 
+          alt="Mystical Realms Logo" 
+          width={64} 
+          height={64}
+          className="w-12 h-12 sm:w-16 sm:h-16"
+          style={{ filter: 'brightness(0) saturate(100%) invert(85%) sepia(35%) saturate(1000%) hue-rotate(260deg) brightness(1.1) contrast(1)' }}
+        />
         <Heading 
           size="9" 
           className="font-cinzel font-bold tracking-tight drop-shadow-lg"

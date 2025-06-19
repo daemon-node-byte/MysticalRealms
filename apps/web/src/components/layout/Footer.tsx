@@ -1,6 +1,7 @@
 import React from 'react';
 import { InstagramLogoIcon, TwitterLogoIcon, DiscordLogoIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const Footer: React.FC = () => (
   <footer style={{ width: '100%', padding: '2rem 0', background: 'var(--color-primary)', color: 'var(--color-text)', borderTop: '1px solid var(--color-border)' }}>
@@ -23,6 +24,16 @@ export const Footer: React.FC = () => (
         <button type="button" className="bg-[var(--color-accent)] text-[var(--color-primary)] rounded px-4 py-1 font-semibold hover:bg-[var(--color-secondary)] transition" disabled>Subscribe</button>
       </div>
     </div>
-    <div className="text-center text-xs text-[var(--color-accent)] mt-4">© {new Date().getFullYear()} Mystical Realms. All rights reserved.</div>
+    <div className="text-center mt-8 mb-4 flex items-center justify-center gap-2">
+      <Image 
+        src="/logo.svg" 
+        alt="Mystical Realms Logo" 
+        width={20} 
+        height={20}
+        className="w-5 h-5"
+        style={{ filter: 'brightness(0) saturate(100%) invert(60%) sepia(85%) saturate(1000%) hue-rotate(260deg) brightness(1.2) contrast(1.1)' }}
+      />
+      <span className="text-xs text-[var(--color-accent)] font-cinzel">© {new Date().getFullYear()} Mystical Realms. All rights reserved.</span>
+    </div>
   </footer>
 );
