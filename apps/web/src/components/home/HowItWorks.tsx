@@ -1,37 +1,102 @@
 import React from 'react';
+import { Card, Text, Heading, Section, Grid, Flex, Box, Badge } from '@radix-ui/themes';
 
 const steps = [
   {
     step: 1,
     label: 'Sign Up',
-    desc: 'Create your free account to unlock the mystical realms.'
+    desc: 'Create your free account to unlock the mystical realms and begin your spiritual journey.'
   },
   {
     step: 2,
     label: 'Choose a Service',
-    desc: 'Pick Tarot, Astrology, or Dice to begin your journey.'
+    desc: 'Pick from Tarot readings, Astrology charts, or Dice divination to explore your path.'
   },
   {
     step: 3,
     label: 'Receive Insight',
-    desc: 'Get personalized, AI-powered guidance and cosmic wisdom.'
+    desc: 'Get personalized, AI-powered guidance and cosmic wisdom tailored to your unique journey.'
   }
 ];
 
 export const HowItWorks: React.FC = () => (
-  <section className="w-full py-16" style={{ background: 'linear-gradient(to bottom, var(--color-primary), var(--color-background))' }}>
-    <div className="max-w-4xl mx-auto flex flex-col items-center">
-      <h2 className="text-3xl md:text-4xl font-cinzel font-bold mb-8" style={{ color: 'var(--color-accent)' }}>How It Works</h2>
-      <div className="flex flex-col md:flex-row gap-8 w-full justify-center">
-        {steps.map((s, i) => (
-          <div key={s.step} className="flex flex-col items-center rounded-xl p-6 shadow-lg w-full md:w-1/3" style={{ background: 'var(--color-primary)', border: '1px solid var(--color-border)' }}>
-            <div className="w-12 h-12 flex items-center justify-center rounded-full mb-4 shadow-md" style={{ background: 'var(--color-accent)', color: 'var(--color-primary)' }}>{s.step}</div>
-            <h3 className="text-xl font-semibold mb-2 font-cinzel">{s.label}</h3>
-            <p className="text-center" style={{ color: 'var(--color-text)' }}>{s.desc}</p>
-            {i < steps.length - 1 && <div className="hidden md:block h-8 border-l-2 border-dashed my-4" style={{ borderColor: 'var(--color-accent)' }} />}
-          </div>
+  <Section 
+    className="w-full py-20" 
+    style={{ 
+      background: 'linear-gradient(to bottom, var(--color-background), var(--color-primary))' 
+    }}
+  >
+    <Box className="max-w-6xl mx-auto px-4">
+      <Flex direction="column" align="center" mb="12">
+        <Heading 
+          size="8" 
+          className="font-cinzel font-bold mb-4 text-center"
+          style={{ color: 'var(--color-accent)' }}
+        >
+          How It Works
+        </Heading>
+        <Text 
+          size="4" 
+          className="text-center max-w-2xl opacity-90"
+          style={{ color: 'var(--color-text)' }}
+        >
+          Your journey to mystical wisdom begins with just a few simple steps
+        </Text>
+      </Flex>
+      
+      <Grid columns={{ initial: '1', md: '3' }} gap="6">
+        {steps.map((step, index) => (
+          <Card
+            key={step.step}
+            className="relative group transition-all duration-300 hover:scale-105"
+            style={{ 
+              background: 'var(--color-card)', 
+              border: '1px solid var(--color-border)',
+              borderRadius: '16px'
+            }}
+          >
+            <Box p="6">
+              <Flex direction="column" align="center" gap="4">
+                <Badge 
+                  size="3"
+                  className="font-bold text-xl w-12 h-12 flex items-center justify-center rounded-full"
+                  style={{ 
+                    background: 'var(--color-accent)', 
+                    color: 'var(--color-primary)',
+                    border: 'none'
+                  }}
+                >
+                  {step.step}
+                </Badge>
+                
+                <Heading 
+                  size="5" 
+                  className="font-cinzel font-bold text-center"
+                  style={{ color: 'var(--color-text)' }}
+                >
+                  {step.label}
+                </Heading>
+                
+                <Text 
+                  size="3" 
+                  className="text-center leading-relaxed"
+                  style={{ color: 'var(--color-text)', opacity: 0.8 }}
+                >
+                  {step.desc}
+                </Text>
+              </Flex>
+              
+              {/* Connector line for larger screens */}
+              {index < steps.length - 1 && (
+                <div 
+                  className="hidden md:block absolute top-1/2 -right-3 w-6 h-0.5 transform -translate-y-1/2"
+                  style={{ background: 'var(--color-accent)', opacity: 0.5 }}
+                />
+              )}
+            </Box>
+          </Card>
         ))}
-      </div>
-    </div>
-  </section>
+      </Grid>
+    </Box>
+  </Section>
 );

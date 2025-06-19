@@ -6,10 +6,10 @@ describe('CommunityPreview', () => {
     render(<CommunityPreview />);
     expect(screen.getByText(/Pulled The Star today/i)).toBeInTheDocument();
     expect(screen.getByText(/My birth chart reading/i)).toBeInTheDocument();
-    expect(screen.getByText(/Shared my first 3D spread/i)).toBeInTheDocument();
-    expect(screen.getByText((content) => content.includes('anon-1'))).toBeInTheDocument();
-    expect(screen.getByText((content) => content.includes('anon-2'))).toBeInTheDocument();
-    expect(screen.getByText((content) => content.includes('anon-3'))).toBeInTheDocument();
+    expect(screen.getByText(/Just shared my first 3D tarot spread/i)).toBeInTheDocument();
+    expect(screen.getByText((content) => content.includes('Luna_Mystic'))).toBeInTheDocument();
+    expect(screen.getByText((content) => content.includes('StarSeer89'))).toBeInTheDocument();
+    expect(screen.getByText((content) => content.includes('MysticJourney'))).toBeInTheDocument();
   });
   it('renders Join the Conversation link', () => {
     render(<CommunityPreview />);

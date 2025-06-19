@@ -46,10 +46,20 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith("/api") &&
     !request.nextUrl.pathname.startsWith("/signup") &&
     !request.nextUrl.pathname.startsWith("/reset") &&
-    !request.nextUrl.pathname.startsWith("/error")
+    !request.nextUrl.pathname.startsWith("/error") &&
+    !request.nextUrl.pathname.startsWith("/_next") &&
+    !request.nextUrl.pathname.startsWith("/favicon") &&
+    request.nextUrl.pathname !== "/"
   ) {
-    // no user, potentially respond by redirecting the user to the login page
-    if (request.nextUrl.pathname !== "/") {
+    // Check if trying to access protected routes
+    if (
+      request.nextUrl.pathname.startsWith("/dashboard") ||
+      request.nextUrl.pathname.startsWith("/profile") ||
+      request.nextUrl.pathname.startsWith("/journal") ||
+      request.nextUrl.pathname.startsWith("/tarot") ||
+      request.nextUrl.pathname.startsWith("/astrology") ||
+      request.nextUrl.pathname.startsWith("/calendar")
+    ) {
       const url = request.nextUrl.clone();
       url.pathname = "/signin";
       return NextResponse.redirect(url);
