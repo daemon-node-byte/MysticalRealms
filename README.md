@@ -4,7 +4,7 @@
 > Discover the mysteries of the cosmos through interactive tarot readings, personalized astrology charts, and immersive 3D experiences.
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Website](https://img.shields.io/website?url=https%3B%2F%2Fwww.mystical-realms.com&up_message=online&down_message=offline&link=https%3B%2F%2Fwww.mystical-realms.com%2F)](https://www.mystical-realms.com/)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.mystical-realms.com&up_message=online&down_message=offline&link=https%3B%2F%2Fwww.mystical-realms.com%2F)](https://www.mystical-realms.com/)
 [![Build Status](https://github.com/daemon-node-byte/MysticalRealms/workflows/CI/badge.svg)](https://github.com/daemon-node-byte/MysticalRealms/actions)
 [![Coverage Status](https://codecov.io/gh/daemon-node-byte/MysticalRealms/branch/main/graph/badge.svg)](https://codecov.io/gh/daemon-node-byte/MysticalRealms)
 [![Code Quality](https://app.codacy.com/project/badge/Grade/12345678901234567890123456789012)](https://www.codacy.com/gh/daemon-node-byte/MysticalRealms/dashboard)
