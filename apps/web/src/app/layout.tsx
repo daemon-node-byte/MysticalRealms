@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "@radix-ui/themes/styles.css";
+import { Theme } from "@radix-ui/themes";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
@@ -27,12 +29,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-gradient-to-b from-[#0F0014] to-[#2C003E] text-[#F5E8FF]`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        style={{
+          background: 'var(--color-background)',
+          color: 'var(--color-text)',
+          '--color-primary': '#2C003E',
+          '--color-secondary': '#4B1E6B',
+          '--color-accent': '#9D4EDD',
+          '--color-text': '#F5E8FF',
+          '--color-background': '#0F0014',
+          '--color-border': '#4B1E6B',
+          '--color-card': '#2C003E',
+        } as React.CSSProperties}
+      >
+        <Theme >
+
         <Header />
-        <main className="flex-1 flex flex-col items-center justify-center px-4">
+        <main className="flex-1 flex flex-col items-center justify-center">
           {children}
         </main>
         <Footer />
+        </Theme>
       </body>
     </html>
   );

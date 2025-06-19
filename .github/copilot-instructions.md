@@ -1,10 +1,15 @@
-# Mystical Realms – Repository Context Instructions (for Copilot)
-
-## Project Purpose
+# Copilot Instructions for Mystical Realms Project
 
 Mystical Realms is a modular Tarot & Astrology platform built with Next.js (TypeScript), Supabase (Postgres), Babylon.js (3D), and a Python (FastAPI) microservice for astrology calculations. It features user authentication, tarot readings, astrology charts, journals, quizzes, and a blog, with a focus on testability, modularity, and a mystical, immersive UI.
 
----
+## Coding Standards
+
+- **Language**: Use TypeScript for frontend (Next.js) and Python for backend (FastAPI).
+- **Typing**: Enforce strict typing using TypeScript interfaces and Pydantic models.
+- **Modularity**: Organize code into features, with clear separation of concerns (e.g., components, services, utilities).
+- **Testing**: Follow Test-Driven Development (TDD) principles. Write unit tests for all components and services, using Jest for frontend and Pytest for backend.
+- **Documentation**: Maintain clear, concise documentation in the `/docs/wiki` directory, following the structure outlined below.
+- **Design**: Use Radix-UI components and primitives for UI elements, utilize TailwindCSS classes and make custom utility class is logical, following the design principles outlined in the documentation.
 
 ## Documentation Overview
 
@@ -39,5 +44,7 @@ The `/docs/wiki` directory contains detailed, structured documentation for all m
 - For database or API changes, ensure consistency with the Supabase schema and Python service contracts.
 - For UI, follow the design system and theming guidelines.
 - When in doubt, reference the relevant wiki file for context.
+- When suggesting new features or changes, consider the impact on existing architecture and user experience.
+- When create UI components, ensure they are modular, reusable, and follow the design principles outlined in `design_principles.md` and use Radix-UI from components `@radix-ui/themes` and primitives from `radix-ui`
 
 ---
