@@ -46,5 +46,6 @@ The `/docs/wiki` directory contains detailed, structured documentation for all m
 - When in doubt, reference the relevant wiki file for context.
 - When suggesting new features or changes, consider the impact on existing architecture and user experience.
 - When create UI components, ensure they are modular, reusable, and follow the design principles outlined in `design_principles.md` and use Radix-UI from components `@radix-ui/themes` and primitives from `radix-ui`
+- Use PNPM for package management, ensuring all dependencies are up-to-date and compatible with the project structure.
 
 ---

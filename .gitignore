@@ -17,3 +17,5 @@ htmlcov/
 .env.*
 !.env.example
 
+.clj-kondo
+.lsp
