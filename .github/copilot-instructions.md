@@ -195,7 +195,7 @@ pnpm dev:web    # Start web app in development mode
 pnpm dev:api     # Start API service in development mode
 pnpm -r install     # Install all dependencies
 pnpm build       # Build all apps
-pnpm test        # Run all tests
+pnpm test:web        # Run web app tests
 ```
 
 ## 📚 Documentation Reference
