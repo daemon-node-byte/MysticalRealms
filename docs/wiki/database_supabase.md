@@ -179,19 +179,20 @@ create table tarot_cards (
   name text,
   suit text, -- "Major", "Wands", "Cups", "Swords", "Pentacles"
   number text,
-  keywords text[],
+  keywords text[], -- upright keywords
+  reversed_keywords text[], -- reversed keywords
   upright_meaning text,
   reversed_meaning text,
   image_url text
 );
 
 -- SEED MAJOR ARCANA (abridged example, 5 cards)
-insert into tarot_cards (name, suit, number, keywords, upright_meaning, reversed_meaning, image_url) values
-('The Fool', 'Major', '0', array['beginnings', 'innocence', 'freedom'], 'New beginnings, spontaneity, free spirit', 'Naivety, foolishness, risk-taking', 'tarot-cards/major/fool.jpg'),
-('The Magician', 'Major', 'I', array['manifestation', 'power', 'resourcefulness'], 'Taking action, willpower, inspired focus', 'Manipulation, untapped talents', 'tarot-cards/major/magician.jpg'),
-('The High Priestess', 'Major', 'II', array['intuition', 'mystery', 'spirituality'], 'Inner voice, divine feminine, secrets', 'Secrets withheld, disconnected intuition', 'tarot-cards/major/high_priestess.jpg'),
-('The Empress', 'Major', 'III', array['fertility', 'beauty', 'nurturing'], 'Abundance, motherhood, nature', 'Dependence, creative block, smothering', 'tarot-cards/major/empress.jpg'),
-('The Emperor', 'Major', 'IV', array['authority', 'structure', 'control'], 'Leadership, stability, protection', 'Tyranny, rigidity, domination', 'tarot-cards/major/emperor.jpg');
+insert into tarot_cards (name, suit, number, keywords, reversed_keywords, upright_meaning, reversed_meaning, image_url) values
+('The Fool', 'Major', '0', array['beginnings', 'innocence', 'freedom'], array['naivety', 'recklessness', 'risk-taking'], 'New beginnings, spontaneity, free spirit', 'Naivety, foolishness, risk-taking', 'tarot-cards/major/fool.jpg'),
+('The Magician', 'Major', 'I', array['manifestation', 'power', 'resourcefulness'], array['manipulation', 'untapped talents', 'poor planning'], 'Taking action, willpower, inspired focus', 'Manipulation, untapped talents', 'tarot-cards/major/magician.jpg'),
+('The High Priestess', 'Major', 'II', array['intuition', 'mystery', 'spirituality'], array['secrets withheld', 'disconnected intuition', 'lack of center'], 'Inner voice, divine feminine, secrets', 'Secrets withheld, disconnected intuition', 'tarot-cards/major/high_priestess.jpg'),
+('The Empress', 'Major', 'III', array['fertility', 'beauty', 'nurturing'], array['dependence', 'creative block', 'smothering'], 'Abundance, motherhood, nature', 'Dependence, creative block, smothering', 'tarot-cards/major/empress.jpg'),
+('The Emperor', 'Major', 'IV', array['authority', 'structure', 'control'], array['tyranny', 'rigidity', 'domination'], 'Leadership, stability, protection', 'Tyranny, rigidity, domination', 'tarot-cards/major/emperor.jpg');
 ```
 
 Let me know if you'd like **all 78 tarot cards** as a script or JSON file — I can provide that next.
@@ -231,7 +232,7 @@ insert into zodiac_signs (name, element, modality, ruling_planet, start_date, en
 
 ---
 
-### 🪐 Planets
+### 🪐 Planets (12 Total for Dice Game)
 
 ```sql
 create table planets (
@@ -252,7 +253,9 @@ insert into planets (name, symbol, archetype, associated_sign) values
 ('Saturn', '♄', 'Structure, discipline, responsibility', 'Capricorn'),
 ('Uranus', '♅', 'Innovation, rebellion, change', 'Aquarius'),
 ('Neptune', '♆', 'Dreams, illusions, spirituality', 'Pisces'),
-('Pluto', '♇', 'Transformation, power, rebirth', 'Scorpio');
+('Pluto', '♇', 'Transformation, power, rebirth', 'Scorpio'),
+('North Node', '☊', 'Destiny, life purpose, spiritual growth', 'Karmic Direction'),
+('South Node', '☋', 'Past life, natural talents, karma', 'Karmic Release');
 ```
 
 ---
@@ -398,6 +401,7 @@ classDiagram
         +text suit
         +text number
         +text[] keywords
+        +text[] reversed_keywords
         +text upright_meaning
         +text reversed_meaning
         +text image_url
