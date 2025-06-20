@@ -87,7 +87,7 @@ CREATE TABLE tarot_cards (
 -- Custom tarot spreads
 CREATE TABLE tarot_spreads (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     description TEXT,
     is_public BOOLEAN DEFAULT false,
