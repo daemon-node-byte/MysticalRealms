@@ -141,31 +141,57 @@ Before you begin, ensure you have the following installed:
 2. **Install dependencies**
 
    ```bash
-   pnpm install
+   pnpm --filter web install
    ```
 
 3. **Start the development environment**
 
    ```bash
-   # Start all services (Supabase, Web, API)
-   ./scripts/start_dev.sh
-   ```
-
-   Or start services individually:
-
-   ```bash
    # Start Supabase (Database & Auth)
-   cd packages/supabase && docker-compose up -d
-
-   # or use Supabase CLI
-   # supabase start
-
-   # Start Next.js frontend
-   pnpm dev:web
-
-   # Start FastAPI backend
-   pnpm dev:api
+   $ supabase start
    ```
+
+# Once is running you will be provided with environment variables
+
+# example output:
+
+# API URL: http://127.0.0.1:54321
+
+# GraphQL URL: http://127.0.0.1:54321/graphql/v1
+
+# S3 Storage URL: http://127.0.0.1:54321/storage/v1/s3
+
+# DB URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+
+# Studio URL: http://127.0.0.1:54323
+
+# Inbucket URL: http://127.0.0.1:54324
+
+# JWT secret: super-secret-jwt-token-with-at-least-32-characters-long
+
+# anon key: <local_key>
+
+# service_role key: <local_key>
+
+# S3 Access Key: <local_key>
+
+# S3 Secret Key: <local_key>
+
+# S3 Region: local
+
+````
+
+Transform the output into `/apps/web/.env.local`
+
+4. **Run the application**
+
+```bash
+ # Start Next.js frontend
+ pnpm dev:web
+
+ # Start FastAPI backend
+ pnpm dev:api
+````
 
 4. **Access the application**
    - **Frontend**: http://localhost:3000
@@ -173,8 +199,6 @@ Before you begin, ensure you have the following installed:
    - **Supabase Dashboard**: http://localhost:54323
 
 ### Environment Configuration
-
-The development environment will automatically set up environment variables from `.env.example` files. For production deployment, ensure you configure:
 
 - **Supabase**: Database URL and API keys
 - **OpenAI**: API key for AI interpretations
@@ -184,15 +208,7 @@ The development environment will automatically set up environment variables from
 
 ## 📚 Documentation
 
-Comprehensive documentation is available in the [`/docs/wiki`](/docs/wiki) directory:
-
-- **[Architecture & Best Practices](/docs/wiki/house_rules.md)** - Code organization and development guidelines
-- **[Database Schema](/docs/wiki/database_supabase.md)** - Complete database structure and relationships
-- **[Design Principles](/docs/wiki/design_principles.md)** - UI/UX guidelines and theming
-- **[Testing Strategy](/docs/wiki/testing_setup.md)** - Testing tools and methodologies
-- **[Sprint Roadmap](/docs/wiki/techstack_roadmap.md)** - Development timeline and feature priorities
-- **[Security Policy](/docs/SECURITY.md)** - Security practices and vulnerability reporting
-- **[Code of Conduct](/docs/CODE_OF_CONDUCT.md)** - Community guidelines and standards
+Comprehensive documentation is available in the [Repo Wiki](https://github.com/daemon-node-byte/MysticalRealms/wiki).
 
 ---
 

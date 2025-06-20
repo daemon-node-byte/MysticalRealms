@@ -1,17 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/utils/supabase/client';
+import { ProfileCompletionForm } from '@/components/profile/ProfileCompletionForm';
+import { useProfileCompletion } from '@/hooks/useProfileCompletion';
+import { ProfileFormData } from '@/types/profile';
 import {
   Card,
   Heading,
   Text,
   Box,
-  Button,
-  TextField,
-  TextArea,
   Flex,
   Avatar,
   Badge,
@@ -20,42 +20,33 @@ import {
 } from '@radix-ui/themes';
 import {
   PersonIcon,
-  Pencil1Icon,
   CheckIcon,
-  Cross2Icon,
   InfoCircledIcon
 } from '@radix-ui/react-icons';
 
-interface ProfileFormData {
-  username: string;
-  bio: string;
-  status: string;
-}
-
 function ProfileContent() {
-  const { profile, user } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
+  const { profile, user, loading: authLoading } = useAuth();
+  const completion = useProfileCompletion(profile);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [formData, setFormData] = useState<ProfileFormData>({
-    username: '',
-    bio: '',
-    status: ''
-  });
 
   const supabase = createClient();
 
-  useEffect(() => {
-    if (profile) {
-      setFormData({
-        username: profile.username || '',
-        bio: profile.bio || '',
-        status: profile.status || ''
-      });
-    }
-  }, [profile]);
+  console.log('Profile render:', { profile, user: !!user, authLoading });
 
-  const handleSave = async () => {
+  // Show loading state while auth is resolving
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center gap-2">
+          <div>Loading profile...</div>
+          <div className="text-sm text-gray-500">Auth: {authLoading ? 'loading' : 'loaded'}</div>
+        </div>
+      </div>
+    );
+  }
+
+  const handleSave = async (formData: ProfileFormData) => {
     if (!user) return;
 
     setLoading(true);
@@ -76,10 +67,11 @@ function ProfileContent() {
       }
 
       setMessage({ type: 'success', text: 'Profile updated successfully!' });
-      setIsEditing(false);
       
       // Refresh the page to get updated profile data
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error('Error updating profile:', error);
       setMessage({ 
@@ -89,18 +81,6 @@ function ProfileContent() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleCancel = () => {
-    if (profile) {
-      setFormData({
-        username: profile.username || '',
-        bio: profile.bio || '',
-        status: profile.status || ''
-      });
-    }
-    setIsEditing(false);
-    setMessage(null);
   };
 
   if (!profile) {
@@ -140,11 +120,25 @@ function ProfileContent() {
         </Box>
       )}
 
-      {/* Profile Card */}
-      <Card style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
+      {/* Completion Status */}
+      {completion.isComplete && (
+        <Box mb="4">
+          <Callout.Root color="green">
+            <Callout.Icon>
+              <CheckIcon />
+            </Callout.Icon>
+            <Callout.Text>
+              Your profile is complete! You can now access all features of Mystical Realms.
+            </Callout.Text>
+          </Callout.Root>
+        </Box>
+      )}
+
+      {/* Profile Overview Card */}
+      <Card style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }} mb="6">
         <Box p="6">
           {/* Avatar Section */}
-          <Flex align="center" gap="4" mb="6">
+          <Flex align="center" gap="4" mb="4">
             <Avatar
               size="6"
               src={profile.avatar_url || undefined}
@@ -168,117 +162,24 @@ function ProfileContent() {
             </Box>
           </Flex>
 
-          <Separator size="4" mb="6" />
-
-          {/* Profile Form */}
-          <Box>
-            <Flex justify="between" align="center" mb="4">
-              <Heading size="5" style={{ color: 'var(--color-text)' }}>
-                Profile Information
-              </Heading>
-              {!isEditing && (
-                <Button onClick={() => setIsEditing(true)} size="2">
-                  <Pencil1Icon />
-                  Edit Profile
-                </Button>
-              )}
-            </Flex>
-
-            <Box style={{ display: 'grid', gap: '1rem' }}>
-              {/* Username */}
-              <Box>
-                <Text size="2" weight="bold" style={{ color: 'var(--color-text)' }} mb="1">
-                  Username
-                </Text>
-                {isEditing ? (
-                  <TextField.Root
-                    value={formData.username}
-                    onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                    placeholder="Enter your username"
-                  />
-                ) : (
-                  <Text size="3" style={{ color: 'var(--color-text)' }}>
-                    {profile.username || 'No username set'}
-                  </Text>
-                )}
-              </Box>
-
-              {/* Status */}
-              <Box>
-                <Text size="2" weight="bold" style={{ color: 'var(--color-text)' }} mb="1">
-                  Status
-                </Text>
-                {isEditing ? (
-                  <TextField.Root
-                    value={formData.status}
-                    onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
-                    placeholder="e.g., Novice, Practitioner, Master"
-                  />
-                ) : (
-                  <Text size="3" style={{ color: 'var(--color-text)' }}>
-                    {profile.status || 'No status set'}
-                  </Text>
-                )}
-              </Box>
-
-              {/* Bio */}
-              <Box>
-                <Text size="2" weight="bold" style={{ color: 'var(--color-text)' }} mb="1">
-                  Bio
-                </Text>
-                {isEditing ? (
-                  <TextArea
-                    value={formData.bio}
-                    onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
-                    placeholder="Tell us about your spiritual journey..."
-                    rows={4}
-                  />
-                ) : (
-                  <Text size="3" style={{ color: 'var(--color-text)', opacity: 0.8 }}>
-                    {profile.bio || 'No bio added yet'}
-                  </Text>
-                )}
-              </Box>
-
-              {/* Account Info */}
-              <Box>
-                <Text size="2" weight="bold" style={{ color: 'var(--color-text)' }} mb="1">
-                  Member Since
-                </Text>
-                <Text size="3" style={{ color: 'var(--color-text)', opacity: 0.8 }}>
-                  {new Date(profile.created_at).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-              </Box>
-            </Box>
-
-            {/* Action Buttons */}
-            {isEditing && (
-              <Flex gap="2" justify="end" mt="6">
-                <Button
-                  variant="soft"
-                  onClick={handleCancel}
-                  disabled={loading}
-                >
-                  <Cross2Icon />
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleSave}
-                  disabled={loading}
-                  loading={loading}
-                >
-                  <CheckIcon />
-                  Save Changes
-                </Button>
-              </Flex>
-            )}
-          </Box>
+          {/* Account Info */}
+          <Text size="2" style={{ color: 'var(--color-text)', opacity: 0.6 }}>
+            Member since {new Date(profile.created_at).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </Text>
         </Box>
       </Card>
+
+      {/* Profile Completion Form */}
+      <ProfileCompletionForm
+        profile={profile}
+        onSave={handleSave}
+        loading={loading}
+        showCancelButton={false}
+      />
     </div>
   );
 }

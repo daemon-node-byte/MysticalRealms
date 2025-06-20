@@ -2,6 +2,7 @@
 
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import { useAuth } from '@/hooks/useAuth';
+import { ProfileCompletionBanner } from '@/components/profile/ProfileCompletionBanner';
 import { 
   Card, 
   Heading, 
@@ -31,7 +32,21 @@ interface QuickAction {
 }
 
 function DashboardContent() {
-  const { profile } = useAuth();
+  const { profile, loading } = useAuth();
+
+  console.log('Dashboard render:', { profile, loading });
+
+  // Show loading state while auth is resolving
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center gap-2">
+          <div>Loading dashboard...</div>
+          <div className="text-sm text-gray-500">Profile: {profile ? 'loaded' : 'loading'}</div>
+        </div>
+      </div>
+    );
+  }
 
   // Quick Actions data configuration
   const quickActions: QuickAction[] = [
@@ -63,6 +78,9 @@ function DashboardContent() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
+      {/* Profile Completion Banner */}
+      <ProfileCompletionBanner profile={profile} />
+
       {/* Welcome Header */}
       <Box mb="6">
         <Flex align="center" gap="3" mb="2">

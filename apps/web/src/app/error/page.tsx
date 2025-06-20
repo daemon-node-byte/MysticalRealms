@@ -1,45 +1,28 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Text, Heading, Section, Flex, Box, Card, Badge } from '@radix-ui/themes';
 import { 
   ExclamationTriangleIcon, 
   HomeIcon, 
-  ReloadIcon, 
   BackpackIcon,
   ArrowLeftIcon
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-interface ErrorPageProps {
-  error?: Error;
-  reset?: () => void;
-}
-
-export default function ErrorPage({ error, reset }: ErrorPageProps) {
+// This is a regular page component for /error route
+export default function ErrorPage() {
   const router = useRouter();
-  const [errorId, setErrorId] = useState<string>('');
+  const [errorId] = useState<string>(`ERR-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   const [reportSent, setReportSent] = useState(false);
-
-  useEffect(() => {
-    // Generate a unique error ID for tracking
-    setErrorId(`ERR-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
-    
-    // Log error for development
-    if (error) {
-      console.error('Application Error:', error);
-    }
-  }, [error]);
 
   const handleReportError = async () => {
     try {
       // In a real application, you would send this to your error tracking service
-      // For now, we'll simulate error reporting
       const errorReport = {
         id: errorId,
-        message: error?.message || 'Unknown error',
-        stack: error?.stack,
+        message: 'Unknown error',
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
         url: window.location.href,
@@ -114,23 +97,8 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
                 style={{ color: 'var(--color-text)' }}
               >
                 We encountered an unexpected error while processing your request. 
-                Don&pos;t worry - our mystical energies are working to restore balance.
+                Don&apos;t worry - our mystical energies are working to restore balance.
               </Text>
-
-              {error?.message && (
-                <Box 
-                  className="p-3 rounded-lg w-full"
-                  style={{ background: 'rgba(157, 78, 221, 0.05)' }}
-                >
-                  <Text 
-                    size="2" 
-                    className="font-mono opacity-75"
-                    style={{ color: 'var(--color-text)' }}
-                  >
-                    Error: {error.message}
-                  </Text>
-                </Box>
-              )}
 
               {errorId && (
                 <Flex align="center" gap="2">
@@ -153,24 +121,6 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
             {/* Action Buttons */}
             <Flex direction="column" gap="3" className="w-full max-w-sm">
-              {/* Retry Button */}
-              {reset && (
-                <Button
-                  onClick={reset}
-                  size="3"
-                  className="w-full font-semibold transition-all hover:shadow-lg transform hover:scale-105"
-                  style={{
-                    background: 'var(--color-accent)',
-                    color: 'var(--color-primary)',
-                    border: 'none'
-                  }}
-                  aria-label="Try again"
-                >
-                  <ReloadIcon className="w-4 h-4" />
-                  Try Again
-                </Button>
-              )}
-
               {/* Navigation Buttons */}
               <Flex gap="2" className="w-full">
                 <Button
@@ -253,25 +203,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
                 className="opacity-75"
                 style={{ color: 'var(--color-text)' }}
               >
-                If this problem persists, you can{' '}
-                <Link 
-                  href="/contact" 
-                  className="underline hover:no-underline"
-                  style={{ color: 'var(--color-accent)' }}
-                  aria-label="Contact support for assistance"
-                >
-                  contact our support team
-                </Link>
-                {' '}or check our{' '}
-                <Link 
-                  href="/status" 
-                  className="underline hover:no-underline"
-                  style={{ color: 'var(--color-accent)' }}
-                  aria-label="Check system status"
-                >
-                  system status
-                </Link>
-                .
+                If this problem persists, you can contact our support team or check our system status.
               </Text>
             </Box>
           </Flex>

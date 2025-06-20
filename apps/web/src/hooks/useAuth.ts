@@ -3,16 +3,7 @@
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
-
-interface Profile {
-  id: string;
-  username: string | null;
-  bio: string | null;
-  avatar_url: string | null;
-  status: string | null;
-  badges: string[] | null;
-  created_at: string;
-}
+import { Profile } from "@/types/profile";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -26,33 +17,61 @@ export function useAuth() {
 
     // Get initial session
     const getUser = async () => {
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
+      try {
+        const {
+          data: { user },
+          error: userError
+        } = await supabase.auth.getUser();
 
-      if (!isMounted) return;
+        if (userError) {
+          console.error("Error getting user:", userError);
+        }
 
-      setUser(user);
+        if (!isMounted) return;
 
-      if (user) {
-        // Fetch user profile
-        const { data: profileData } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .single();
+        setUser(user);
+
+        if (user) {
+          try {
+            // Fetch user profile
+            const { data: profileData, error: profileError } = await supabase
+              .from("profiles")
+              .select("*")
+              .eq("id", user.id)
+              .single();
+
+            if (profileError) {
+              console.error("Error fetching profile:", profileError);
+              // If profile doesn't exist, that's ok - user just needs to complete profile
+              if (profileError.code !== "PGRST116") {
+                // PGRST116 is "not found"
+                console.error("Unexpected profile error:", profileError);
+              }
+            }
+
+            if (isMounted) {
+              setProfile(profileData || null);
+            }
+          } catch (error) {
+            console.error("Profile fetch error:", error);
+            if (isMounted) {
+              setProfile(null);
+            }
+          }
+        } else {
+          if (isMounted) {
+            setProfile(null);
+          }
+        }
 
         if (isMounted) {
-          setProfile(profileData);
+          setLoading(false);
         }
-      } else {
+      } catch (error) {
+        console.error("Auth error:", error);
         if (isMounted) {
-          setProfile(null);
+          setLoading(false);
         }
-      }
-
-      if (isMounted) {
-        setLoading(false);
       }
     };
 
@@ -71,16 +90,27 @@ export function useAuth() {
       const currentFetchId = fetchId;
 
       if (currentUser) {
-        // Fetch user profile
-        const { data: profileData } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", currentUser.id)
-          .single();
+        try {
+          // Fetch user profile
+          const { data: profileData, error: profileError } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", currentUser.id)
+            .single();
 
-        // Only update if this is the latest fetch and component is still mounted
-        if (currentFetchId === fetchId && isMounted) {
-          setProfile(profileData);
+          if (profileError && profileError.code !== "PGRST116") {
+            console.error("Profile fetch error in auth change:", profileError);
+          }
+
+          // Only update if this is the latest fetch and component is still mounted
+          if (currentFetchId === fetchId && isMounted) {
+            setProfile(profileData || null);
+          }
+        } catch (error) {
+          console.error("Error fetching profile in auth change:", error);
+          if (currentFetchId === fetchId && isMounted) {
+            setProfile(null);
+          }
         }
       } else {
         if (isMounted) {
