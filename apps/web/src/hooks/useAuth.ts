@@ -42,15 +42,40 @@ export function useAuth() {
 
             if (profileError) {
               console.error("Error fetching profile:", profileError);
-              // If profile doesn't exist, that's ok - user just needs to complete profile
-              if (profileError.code !== "PGRST116") {
-                // PGRST116 is "not found"
-                console.error("Unexpected profile error:", profileError);
-              }
-            }
+              // If profile doesn't exist, create a minimal one
+              if (profileError.code === "PGRST116") {
+                // PGRST116 is "not found" - create profile
+                const { data: newProfile, error: createError } = await supabase
+                  .from("profiles")
+                  .insert({
+                    id: user.id,
+                    username: null,
+                    bio: null,
+                    status: null
+                  })
+                  .select()
+                  .single();
 
-            if (isMounted) {
-              setProfile(profileData || null);
+                if (createError) {
+                  console.error("Error creating profile:", createError);
+                  if (isMounted) {
+                    setProfile(null);
+                  }
+                } else {
+                  if (isMounted) {
+                    setProfile(newProfile);
+                  }
+                }
+              } else {
+                console.error("Unexpected profile error:", profileError);
+                if (isMounted) {
+                  setProfile(null);
+                }
+              }
+            } else {
+              if (isMounted) {
+                setProfile(profileData);
+              }
             }
           } catch (error) {
             console.error("Profile fetch error:", error);
@@ -98,13 +123,42 @@ export function useAuth() {
             .eq("id", currentUser.id)
             .single();
 
-          if (profileError && profileError.code !== "PGRST116") {
-            console.error("Profile fetch error in auth change:", profileError);
-          }
+          if (profileError && profileError.code === "PGRST116") {
+            // Profile doesn't exist, create a minimal one
+            const { data: newProfile, error: createError } = await supabase
+              .from("profiles")
+              .insert({
+                id: currentUser.id,
+                username: null,
+                bio: null,
+                status: null
+              })
+              .select()
+              .single();
 
-          // Only update if this is the latest fetch and component is still mounted
-          if (currentFetchId === fetchId && isMounted) {
-            setProfile(profileData || null);
+            if (createError) {
+              console.error(
+                "Error creating profile in auth change:",
+                createError
+              );
+              if (currentFetchId === fetchId && isMounted) {
+                setProfile(null);
+              }
+            } else {
+              if (currentFetchId === fetchId && isMounted) {
+                setProfile(newProfile);
+              }
+            }
+          } else if (profileError) {
+            console.error("Profile fetch error in auth change:", profileError);
+            if (currentFetchId === fetchId && isMounted) {
+              setProfile(null);
+            }
+          } else {
+            // Only update if this is the latest fetch and component is still mounted
+            if (currentFetchId === fetchId && isMounted) {
+              setProfile(profileData);
+            }
           }
         } catch (error) {
           console.error("Error fetching profile in auth change:", error);
@@ -118,8 +172,8 @@ export function useAuth() {
         }
       }
 
-      // Only update loading if this is the latest fetch and component is still mounted
-      if (currentFetchId === fetchId && isMounted) {
+      // Always update loading state when auth state changes (not just for latest fetch)
+      if (isMounted) {
         setLoading(false);
       }
     });

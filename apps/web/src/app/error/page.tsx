@@ -1,31 +1,46 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Text, Heading, Section, Flex, Box, Card, Badge } from '@radix-ui/themes';
 import { 
   ExclamationTriangleIcon, 
   HomeIcon, 
   BackpackIcon,
-  ArrowLeftIcon
+  ArrowLeftIcon,
+  ReloadIcon
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// This is a regular page component for /error route
-export default function ErrorPage() {
+// Error boundary component props
+interface ErrorPageProps {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}
+
+// This component can work as both an error boundary and a regular page
+export default function ErrorPage({ error, reset }: ErrorPageProps = {}) {
   const router = useRouter();
   const [errorId] = useState<string>(`ERR-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   const [reportSent, setReportSent] = useState(false);
+
+  // Log error to console when provided
+  useEffect(() => {
+    if (error) {
+      console.error('Application Error:', error);
+    }
+  }, [error]);
 
   const handleReportError = async () => {
     try {
       // In a real application, you would send this to your error tracking service
       const errorReport = {
         id: errorId,
-        message: 'Unknown error',
+        message: error?.message || 'Unknown error',
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString(),
         url: window.location.href,
+        digest: error?.digest,
       };
       
       console.log('Error Report:', errorReport);
@@ -96,8 +111,10 @@ export default function ErrorPage() {
                 className="leading-relaxed opacity-90"
                 style={{ color: 'var(--color-text)' }}
               >
-                We encountered an unexpected error while processing your request. 
-                Don&apos;t worry - our mystical energies are working to restore balance.
+                {error 
+                  ? `Error: ${error.message}` 
+                  : 'We encountered an unexpected error while processing your request. Don\'t worry - our mystical energies are working to restore balance.'
+                }
               </Text>
 
               {errorId && (
@@ -121,6 +138,24 @@ export default function ErrorPage() {
 
             {/* Action Buttons */}
             <Flex direction="column" gap="3" className="w-full max-w-sm">
+              {/* Retry button when reset function is provided */}
+              {reset && (
+                <Button
+                  onClick={reset}
+                  variant="solid"
+                  size="3"
+                  className="w-full font-semibold"
+                  style={{
+                    background: 'var(--color-accent)',
+                    color: 'var(--color-primary)',
+                  }}
+                  aria-label="Try again"
+                >
+                  <ReloadIcon className="w-4 h-4" />
+                  Try Again
+                </Button>
+              )}
+
               {/* Navigation Buttons */}
               <Flex gap="2" className="w-full">
                 <Button
@@ -203,7 +238,15 @@ export default function ErrorPage() {
                 className="opacity-75"
                 style={{ color: 'var(--color-text)' }}
               >
-                If this problem persists, you can contact our support team or check our system status.
+                If this problem persists, you can{' '}
+                <Link href="/contact" aria-label="Contact support" className="underline hover:no-underline">
+                  contact our support team
+                </Link>
+                {' '}or{' '}
+                <Link href="/status" aria-label="Check system status" className="underline hover:no-underline">
+                  check our system status
+                </Link>
+                .
               </Text>
             </Box>
           </Flex>

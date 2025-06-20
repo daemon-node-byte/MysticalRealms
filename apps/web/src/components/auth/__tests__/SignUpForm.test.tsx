@@ -144,7 +144,7 @@ describe('SignUpForm', () => {
     expect(screen.getByText(/password must contain at least one special character/i)).toBeInTheDocument();
   });
 
-  it('shows authentication error when provided', () => {
+  it('shows authentication error when provided', async () => {
     const mockSubmit = jest.fn().mockRejectedValue(new Error('Authentication failed'));
     render(<SignUpForm onSubmit={mockSubmit} />);
     
@@ -161,6 +161,11 @@ describe('SignUpForm', () => {
     
     // Should show auth error after submission
     expect(mockSubmit).toHaveBeenCalled();
+    
+    // Wait for error message to appear
+    await waitFor(() => {
+      expect(screen.getByText(/authentication failed/i)).toBeInTheDocument();
+    });
   });
 
   it('has proper form structure and accessibility', () => {

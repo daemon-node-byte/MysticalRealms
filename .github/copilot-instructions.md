@@ -1,51 +1,229 @@
 # Copilot Instructions for Mystical Realms Project
 
-Mystical Realms is a modular Tarot & Astrology platform built with Next.js (TypeScript), Supabase (Postgres), Babylon.js (3D), and a Python (FastAPI) microservice for astrology calculations. It features user authentication, tarot readings, astrology charts, journals, quizzes, and a blog, with a focus on testability, modularity, and a mystical, immersive UI.
+Mystical Realms is a modular Tarot & Astrology platform built with Next.js 15 (TypeScript), Supabase (PostgreSQL), Babylon.js (3D), and a Python (FastAPI) microservice for astrology calculations. It features user authentication, tarot readings, astrology charts, journals, quizzes, and a blog, with a focus on testability, modularity, and a mystical, immersive UI.
 
-## Coding Standards
+## 🏗️ Architecture Overview
 
-- **Language**: Use TypeScript for frontend (Next.js) and Python for backend (FastAPI).
-- **Typing**: Enforce strict typing using TypeScript interfaces and Pydantic models.
-- **Modularity**: Organize code into features, with clear separation of concerns (e.g., components, services, utilities).
-- **Testing**: Follow Test-Driven Development (TDD) principles. Write unit tests for all components and services, using Jest for frontend and Pytest for backend.
-- **Documentation**: Maintain clear, concise documentation in the `/docs/wiki` directory, following the structure outlined below.
-- **Design**: Use Radix-UI components and primitives for UI elements, utilize TailwindCSS classes and make custom utility class is logical, following the design principles outlined in the documentation.
+### Four-Layer Architecture
 
-## Documentation Overview
+- **UI Layer**: Next.js App Router, React, Babylon.js - handles user interface and interaction
+- **Domain/API Layer**: Next.js API Routes, Zod validation - business logic and API orchestration
+- **Data Access Layer**: Supabase, PostgreSQL - data persistence with Row Level Security (RLS)
+- **Services Layer**: Python FastAPI microservice - specialized astrology calculations and chart generation
 
-The `/docs/wiki` directory contains detailed, structured documentation for all major aspects of the project:
+### Key Design Principles
 
-- **techstack_roadmap.md**: High-level tech stack, architecture, and sprint roadmap.
-- **sprint_summery.md**: Step-by-step breakdown of each sprint, with granular tasks.
-- **database_supabase.md**: Complete Supabase SQL schema, seed data, and ER diagram.
-- **house_rules.md**: Architecture, folder structure, and best-practice guidelines.
-- **design_principles.md**: Visual design principles, theme palettes, and brand usage.
-- **public_pages.md / public_pages_layout.md**: Landing page and public-facing page requirements and layout ideas.
-- **testing_setup.md**: Testing stack, setup, and example tests for frontend and backend.
+- **Modular Architecture**: Clear separation of concerns across layers
+- **Type Safety**: End-to-end TypeScript with Zod validation, Pydantic models for Python
+- **Security First**: All user tables implement Row Level Security (RLS)
+- **Performance Optimized**: SSR, caching, lazy loading, comprehensive indexing
+- **Test-Driven Development**: Write tests before implementation (Jest for frontend, Pytest for backend)
+
+## 🛠️ Tech Stack Details
+
+### Frontend
+
+- **Framework**: Next.js 15 with App Router, TypeScript, React 19
+- **3D Graphics**: Babylon.js for tarot spread creators and immersive experiences
+- **UI Components**: Radix UI components (`@radix-ui/themes`) and primitives
+- **Styling**: TailwindCSS 4 with custom design system
+- **State Management**: React Query for server state, Zustand for local state
+- **Package Manager**: PNPM (specified version: 10.12.1)
+
+### Backend
+
+- **Primary API**: Next.js API Routes for user-facing endpoints
+- **Astrology Service**: FastAPI (Python) with Swiss Ephemeris for calculations
+- **Database**: Supabase (PostgreSQL) with real-time subscriptions
+- **Authentication**: Supabase Auth with OAuth providers
+- **Storage**: Supabase Storage for images, PDFs, user uploads
+
+### Development Environment
+
+- **Monorepo**: PNPM workspace with Turbo.json optimization
+- **Testing**: Jest + React Testing Library, Playwright for E2E
+- **Containerization**: Docker for Python service
+- **CI/CD**: GitHub Actions → Vercel deployment
+
+## 🎨 Design System
+
+### Theme Collection
+
+- **Deep Nebula**: Ethereal, regal (premium experiences)
+- **Midnight Tarot**: Classic, timeless (traditional readings)
+- **Cosmic Neon**: Futuristic, energetic (interactive features)
+- **Sage Minimal**: Clean, focused (accessibility mode)
+
+### Design Principles
+
+- **Dark-First Design**: Optimized for low-light environments
+- **Hierarchical Clarity**: Consistent typography scale (48px → 16px)
+- **Accessibility First**: WCAG AA compliance, 4.5:1 contrast ratios
+- **Mystical Authenticity**: Consistent iconography, subtle animations
+
+## 📊 Database Schema Summary
+
+### Core Tables
+
+- **profiles**: User profiles extending Supabase Auth
+- **tarot_readings**: Reading sessions with JSONB card data
+- **tarot_spreads**: Custom and default spread layouts
+- **astrology_charts**: Birth charts and calculations
+- **journal_entries**: User journaling system
+- **blog_posts**: Content management
+- **quiz_results**: Learning and gamification
+- **calendar_entries**: Personal events and reminders
+
+### Key Features
+
+- Row Level Security on all user tables
+- JSONB columns for flexible data storage
+- Comprehensive indexing strategy
+- Foreign key constraints for data integrity
+- Automatic timestamps and audit trails
+
+## 📁 File Structure Guidelines
+
+### Next.js App Router Structure
+
+```
+apps/web/src/
+├── app/                    # App Router pages
+│   ├── (auth)/            # Authentication routes
+│   ├── (dashboard)/       # Protected dashboard routes
+│   ├── (public)/          # Public content routes
+│   └── api/               # API route handlers
+├── components/            # Reusable UI components
+├── features/             # Feature-specific modules
+├── hooks/                # Custom React hooks
+├── theme/                # Design system and themes
+├── types/                # TypeScript type definitions
+└── utils/                # Utility functions
+```
+
+### Python FastAPI Structure
+
+```
+apps/api/
+├── main.py               # FastAPI entry point
+├── config/               # Configuration management
+├── services/             # Business logic services
+├── models/               # Pydantic data models
+├── routers/              # API route definitions
+└── utils/                # Utility functions
+```
+
+## 🧪 Testing Strategy
+
+### Testing Pyramid
+
+- **Unit Tests**: Jest + React Testing Library (many, fast)
+- **Integration Tests**: API routes, database interactions (some, medium)
+- **E2E Tests**: Playwright for user journeys (few, slow, high confidence)
+
+### Test Coverage Requirements
+
+- Minimum 80% code coverage
+- All components must have unit tests
+- All API routes must have integration tests
+- Critical user journeys must have E2E tests
+
+## 🚀 Development Workflow
+
+### Sprint Structure
+
+- 2-week sprints with clear deliverables
+- Test-Driven Development (TDD) approach
+- Code reviews required for all changes
+- Documentation updated with each feature
+
+### Current Implementation Status
+
+- ✅ Foundation & Infrastructure (Sprint 1)
+- 🔄 Authentication & Profiles (Sprint 2)
+- ⏳ Dashboard & Core Features (Sprint 3)
+- ⏳ Tarot Reading System (Sprint 4)
+
+## 📋 Coding Standards
+
+### TypeScript/JavaScript
+
+- Strict TypeScript configuration
+- Zod schemas for runtime validation
+- ESLint + Prettier for code formatting
+- Functional programming patterns preferred
+- Custom hooks for reusable logic
+
+### Python
+
+- Pydantic models for data validation
+- FastAPI with async/await patterns
+- Type hints required
+- Pytest for comprehensive testing
+- Black + isort for formatting
+
+### UI Components
+
+- Use Radix UI components and primitives exclusively
+- Follow design system color variables
+- Implement responsive design patterns
+- Ensure accessibility compliance
+- Test components in isolation
+
+## 🔧 Development Commands
+
+### Frontend (apps/web)
+
+```bash
+pnpm dev          # Start development server
+pnpm build        # Production build
+pnpm test         # Run Jest tests
+pnpm test:e2e     # Run Playwright E2E tests
+```
+
+### Backend (apps/api)
+
+```bash
+python main.py    # Start FastAPI server
+pytest           # Run Python tests
+```
+
+### Monorepo
+
+```bash
+pnpm dev:web    # Start web app in development mode
+pnpm dev:api     # Start API service in development mode
+pnpm -r install     # Install all dependencies
+pnpm build       # Build all apps
+pnpm test        # Run all tests
+```
+
+## 📚 Documentation Reference
+
+The `/docs/wiki` directory contains comprehensive documentation:
+
+- **techstack_roadmap.md**: Complete tech stack and implementation roadmap
+- **design_pattern_house_rules.md**: Architecture patterns and coding standards
+- **database_schema_complete.md**: Full database schema with relationships
+- **design_principles.md**: Visual design system and theme specifications
+- **testing_setup.md**: Testing strategies and implementation guides
+- **web_app_architecture.md**: Frontend file structure and routing
+- **api_app_architecture.md**: Backend service architecture
+- **sprint_plan_guide.md**: Detailed sprint planning and task breakdown
+
+## 🎯 Key Development Guidelines
+
+1. **Always check documentation first**: Reference wiki files for architecture decisions
+2. **Type safety is non-negotiable**: Use TypeScript interfaces and Pydantic models
+3. **Test-driven development**: Write tests before implementation
+4. **Modular design**: Keep components focused and reusable
+5. **Performance matters**: Consider SSR, caching, and optimization
+6. **Accessibility first**: Ensure WCAG AA compliance
+7. **Security by default**: Implement RLS and input validation
+8. **Consistent styling**: Use design system variables and Radix UI
+9. **Documentation as code**: Update docs with every feature
+10. **Monorepo best practices**: Use PNPM workspace commands
 
 ---
 
-## How to Use This Context
-
-- **Architecture & Patterns**: Refer to `house_rules.md` for code organization, layering, and best practices.
-- **Database & Data Models**: Use `database_supabase.md` for table schemas, relationships, and seed data.
-- **Feature Planning**: Consult `techstack_roadmap.md` and `sprint_summery.md` for implementation order and feature breakdowns.
-- **UI/UX & Design**: Reference `design_principles.md` and `public_pages_layout.md` for visual and interaction guidelines.
-- **Testing**: Follow `testing_setup.md` for recommended tools, config, and test coverage.
-- **Public Pages**: Use `public_pages.md` for requirements and enhancements for non-authenticated pages.
-
----
-
-## Copilot Guidance
-
-- Always align code and suggestions with the modular, layered, and feature-first structure described in `house_rules.md`.
-- Use strict typing (TypeScript, Pydantic) and enforce test-driven development.
-- When generating new code, prefer placing files/folders according to the patterns in the documentation.
-- For database or API changes, ensure consistency with the Supabase schema and Python service contracts.
-- For UI, follow the design system and theming guidelines.
-- When in doubt, reference the relevant wiki file for context.
-- When suggesting new features or changes, consider the impact on existing architecture and user experience.
-- When create UI components, ensure they are modular, reusable, and follow the design principles outlined in `design_principles.md` and use Radix-UI from components `@radix-ui/themes` and primitives from `radix-ui`
-- Use PNPM for package management, ensuring all dependencies are up-to-date and compatible with the project structure.
-
----
+_This document serves as the comprehensive context for GitHub Copilot when working on the Mystical Realms project. Always reference the detailed wiki documentation for specific implementation guidance._

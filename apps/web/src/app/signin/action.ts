@@ -15,18 +15,39 @@ export async function login(formData: FormData) {
     password: formData.get("password") as string
   };
 
-  // Get the intended redirect path from the form data, default to "/"
-  const redirectTo = (formData.get("redirectTo") as string) || "/";
-
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { data: authData, error } = await supabase.auth.signInWithPassword(
+    data
+  );
 
   if (error) {
     const params = new URLSearchParams({ error: error.message });
     redirect(`/signin?${params.toString()}`);
   }
 
+  // Check if user has completed their profile
+  if (authData.user) {
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("username, bio, status")
+      .eq("id", authData.user.id)
+      .single();
+
+    // If profile doesn't exist or is incomplete, redirect to profile setup
+    if (
+      profileError ||
+      !profile ||
+      !profile.username ||
+      !profile.bio ||
+      !profile.status
+    ) {
+      revalidatePath("/", "layout");
+      redirect("/profile/setup");
+    }
+  }
+
+  // Profile is complete, redirect to dashboard
   revalidatePath("/", "layout");
-  redirect(redirectTo);
+  redirect("/dashboard");
 }
 
 export async function signup(formData: FormData) {

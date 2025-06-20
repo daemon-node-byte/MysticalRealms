@@ -80,7 +80,7 @@ describe('SignInForm', () => {
     expect(passwordInput).toHaveAttribute('autoComplete', 'current-password');
   });
 
-  it('displays authentication error messages', () => {
+  it('displays authentication error messages', async () => {
     const mockSubmit = jest.fn().mockRejectedValue(new Error('Invalid credentials'));
     render(<SignInForm onSubmit={mockSubmit} />);
     
@@ -94,6 +94,11 @@ describe('SignInForm', () => {
     fireEvent.submit(form);
     
     expect(mockSubmit).toHaveBeenCalled();
+    
+    // Wait for error message to appear
+    await waitFor(() => {
+      expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();
+    });
   });
 
   it('clears error on new submission attempt', () => {

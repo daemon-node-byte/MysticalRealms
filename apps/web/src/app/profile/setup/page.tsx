@@ -23,18 +23,20 @@ import {
 } from '@radix-ui/react-icons';
 
 function ProfileSetupContent() {
-  const { profile, user } = useAuth();
+  const { profile, user, loading } = useAuth();
   const completion = useProfileCompletion(profile);
-  const [loading, setLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const router = useRouter();
 
   const supabase = createClient();
 
+  console.log('ProfileSetupContent render:', { profile, user: !!user, loading });
+
   const handleSave = async (formData: ProfileFormData) => {
     if (!user) return;
 
-    setLoading(true);
+    setFormLoading(true);
     setMessage(null);
 
     try {
@@ -64,7 +66,7 @@ function ProfileSetupContent() {
         text: error instanceof Error ? error.message : 'Failed to update profile' 
       });
     } finally {
-      setLoading(false);
+      setFormLoading(false);
     }
   };
 
@@ -72,18 +74,40 @@ function ProfileSetupContent() {
     router.push('/dashboard');
   };
 
+  // Show loading state while auth is resolving
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center gap-2">
+          <div>Loading profile setup...</div>
+          <div className="text-sm text-gray-500">
+            Auth: {loading ? 'loading' : 'loaded'},
+            User: {user ? 'authenticated' : 'not authenticated'},
+            Profile: {profile ? 'loaded' : 'loading'}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // If profile is already complete, redirect to dashboard
-  if (completion.isComplete) {
+  if (profile && completion.isComplete) {
     router.push('/dashboard');
     return null;
   }
 
-  if (!profile) {
+  // If no profile and not loading, show message
+  if (!profile && !loading) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Text>Loading profile...</Text>
+        <Text>Profile not found. This may indicate a data issue. Please try signing out and back in.</Text>
       </div>
     );
+  }
+
+  // If still loading or profile exists but not complete, show the form
+  if (loading || !profile) {
+    return null; // Let the loading state above handle this
   }
 
   return (
@@ -132,7 +156,7 @@ function ProfileSetupContent() {
       <ProfileCompletionForm
         profile={profile}
         onSave={handleSave}
-        loading={loading}
+        loading={formLoading}
         onCancel={handleCancel}
         showCancelButton={true}
       />

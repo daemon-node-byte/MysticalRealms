@@ -6,6 +6,8 @@
   "scripts": {
     "dev:web": "pnpm --filter web dev",
     "dev:api": "cd apps/api && sh dev.sh",
-    "test:web": "cd apps/web && pnpm test"
+    "test:web": "cd apps/web && pnpm test",
+    "test:web:coverage": "cd apps/web && pnpm test:coverage",
+    "test:web:e2e": "cd apps/web && pnpm test:e2e"
   }
 }

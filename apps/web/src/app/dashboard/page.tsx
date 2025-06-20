@@ -32,9 +32,9 @@ interface QuickAction {
 }
 
 function DashboardContent() {
-  const { profile, loading } = useAuth();
+  const { profile, user, loading } = useAuth();
 
-  console.log('Dashboard render:', { profile, loading });
+  console.log('Dashboard render:', { profile, user: !!user, loading });
 
   // Show loading state while auth is resolving
   if (loading) {
@@ -42,10 +42,22 @@ function DashboardContent() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="flex flex-col items-center gap-2">
           <div>Loading dashboard...</div>
-          <div className="text-sm text-gray-500">Profile: {profile ? 'loaded' : 'loading'}</div>
+          <div className="text-sm text-gray-500">
+            Auth: {loading ? 'loading' : 'loaded'}, 
+            User: {user ? 'authenticated' : 'not authenticated'},
+            Profile: {profile ? 'loaded' : 'loading'}
+          </div>
         </div>
       </div>
     );
+  }
+
+  // Only redirect if we're sure the user exists but profile is null (not just loading)
+  // We wait for the auth to finish loading before making this decision
+  if (user && profile === null && !loading) {
+    console.log('Redirecting to profile setup: user exists but no profile');
+    window.location.href = '/profile/setup';
+    return null;
   }
 
   // Quick Actions data configuration

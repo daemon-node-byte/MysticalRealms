@@ -81,9 +81,14 @@ describe('PasswordResetForm', () => {
     fireEvent.submit(form);
     
     expect(mockSubmit).toHaveBeenCalledWith(expect.any(FormData));
+    
+    // Wait for success message to appear
+    await waitFor(() => {
+      expect(screen.getByText(/password reset link sent/i)).toBeInTheDocument();
+    });
   });
 
-  it('displays error message on submission failure', () => {
+  it('displays error message on submission failure', async () => {
     const mockSubmit = jest.fn().mockRejectedValue(new Error('Reset failed'));
     render(<PasswordResetForm onSubmit={mockSubmit} />);
     
@@ -94,6 +99,11 @@ describe('PasswordResetForm', () => {
     fireEvent.submit(form);
     
     expect(mockSubmit).toHaveBeenCalled();
+    
+    // Wait for error message to appear
+    await waitFor(() => {
+      expect(screen.getByText(/reset failed/i)).toBeInTheDocument();
+    });
   });
 
   it('clears previous messages on new submission', () => {

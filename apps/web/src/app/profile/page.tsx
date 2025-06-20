@@ -16,13 +16,15 @@ import {
   Avatar,
   Badge,
   Separator,
-  Callout
+  Callout,
+  Button
 } from '@radix-ui/themes';
 import {
   PersonIcon,
   CheckIcon,
   InfoCircledIcon
 } from '@radix-ui/react-icons';
+import Link from 'next/link';
 
 function ProfileContent() {
   const { profile, user, loading: authLoading } = useAuth();
@@ -40,10 +42,21 @@ function ProfileContent() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="flex flex-col items-center gap-2">
           <div>Loading profile...</div>
-          <div className="text-sm text-gray-500">Auth: {authLoading ? 'loading' : 'loaded'}</div>
+          <div className="text-sm text-gray-500">
+            Auth: {authLoading ? 'loading' : 'loaded'},
+            User: {user ? 'authenticated' : 'not authenticated'},
+            Profile: {profile ? 'loaded' : 'loading'}
+          </div>
         </div>
       </div>
     );
+  }
+
+  // Only redirect if we're sure the user exists but profile is null (not just loading)
+  if (user && profile === null && !authLoading) {
+    console.log('Redirecting to profile setup: user exists but no profile');
+    window.location.href = '/profile/setup';
+    return null;
   }
 
   const handleSave = async (formData: ProfileFormData) => {
@@ -86,7 +99,10 @@ function ProfileContent() {
   if (!profile) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Text>Loading profile...</Text>
+        <Text>Profile not found. Please complete your profile setup.</Text>
+        <Button asChild>
+          <Link href="/profile/setup">Complete Profile</Link>
+        </Button>
       </div>
     );
   }
